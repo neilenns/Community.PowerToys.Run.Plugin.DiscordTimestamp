@@ -11,6 +11,8 @@ timestamp format from the resulting list then paste it into Discord.
 
 The result when pasted into Discord:
 
+![Screenshot of Discord with a sent message containing the text "Let's play some disc golf! Meet outside in 5 minutes?". The "in 5 minutes" text is a live-updating time based on the timestamp pasted in.](Docs/discord-example.png)
+
 ## Development notes
 
 This project is based on the [Community.PowerToys.Run.Plugin.Templates](https://github.com/hlaueriksson/Community.PowerToys.Run.Plugin.Templates)
