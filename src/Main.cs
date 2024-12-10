@@ -64,7 +64,16 @@ namespace DiscordTimestamp
             var date = DateTime.SpecifyKind(result.ToTime(), DateTimeKind.Local);
             var unixTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds();
 
-            var humanizedRelative = date.Humanize();
+            // Humanize uses a different format for relative times than Discord does so try a hacky way
+            // to convert it to a preview that looks like Discord's version. Dates in the future need
+            // "from now" stripped off and "in" prefixed, so it becomes "in 5 minutes" instead of
+            // "in 5 minutes from now". Dates in the past don't need any modification. This still isn't
+            // perfect, Humanize says "yesterday" while Discord says "a day ago" but I can't be bothered
+            // to chase down every little variation. 
+            var rawHumanizedRelative = date.Humanize();
+            var humanizedRelative = rawHumanizedRelative.Contains(" from now") ?
+                $"in {date.Humanize().Replace(" from now", "")}" :
+                rawHumanizedRelative;
 
             return
             [
