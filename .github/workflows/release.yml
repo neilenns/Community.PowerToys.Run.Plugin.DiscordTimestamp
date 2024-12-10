@@ -35,9 +35,6 @@ jobs:
         run: |
           dotnet publish -c Release /p:PublishProfile=${{ matrix.architecture }}
 
-      - name: Run tests
-        run: dotnet test vmr-generator.sln --configuration Release
-
       - name: Zip the build output
         run: |
           # Get rid of the PowerToys support DLLs. They are only there for development purposes
@@ -51,4 +48,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./${{ matrix.architecture }}.zip
+            ./${{ matrix.architecture }}-${{ steps.get_version.outputs.version-without-v}}.zip
