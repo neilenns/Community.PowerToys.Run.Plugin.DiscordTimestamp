@@ -1,0 +1,14 @@
+{
+  "ID": "AE72E27DA82C4398AA24E9FFBF0C1ABD",
+  "ActionKeyword": "discordtimestamp",
+  "IsGlobal": false,
+  "Name": "DiscordTimestamp",
+  "Author": "Neil Enns",
+  "Version": "0.86.0",
+  "Language": "csharp",
+  "Website": "https://github.com/Neil Enns/DiscordTimestamp",
+  "ExecuteFileName": "DiscordTimestamp.dll",
+  "IcoPathDark": "Images\\discordtimestamp.dark.png",
+  "IcoPathLight": "Images\\discordtimestamp.light.png",
+  "DynamicLoading": false
+}
