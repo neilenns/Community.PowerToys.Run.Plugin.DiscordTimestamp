@@ -31,4 +31,4 @@ jobs:
 
       - name: Build the application for ${{ matrix.architecture }}
         run: |
-          dotnet publish ./src/DiscordTimestamp.csproj -c Release /p:PublishProfile=${{ matrix.architecture }}
+          dotnet publish .\src\DiscordTimestamp.csproj -c Release /p:PublishProfile=${{ matrix.architecture }}
