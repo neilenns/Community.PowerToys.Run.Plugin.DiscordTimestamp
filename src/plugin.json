@@ -6,7 +6,7 @@
   "Author": "Neil Enns",
   "Version": "0.86.0",
   "Language": "csharp",
-  "Website": "https://github.com/Neil Enns/DiscordTimestamp",
+  "Website": "https://github.com/neilenns/DiscordTimestamp",
   "ExecuteFileName": "DiscordTimestamp.dll",
   "IcoPathDark": "Images\\discordtimestamp.dark.png",
   "IcoPathLight": "Images\\discordtimestamp.light.png",
