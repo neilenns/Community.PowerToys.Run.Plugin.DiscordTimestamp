@@ -42,7 +42,7 @@ jobs:
           Remove-Item -Recurse ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/runtimes
           Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/PowerToys.*
           Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/PowerToys.*
-          Compress-Archive -Path ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/* -DestinationPath ./x64.zip
+          Compress-Archive -Path ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/* -DestinationPath ./${{ matrix.architecture }}-${{ steps.get_version.outputs.version-without-v}}.zip
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
