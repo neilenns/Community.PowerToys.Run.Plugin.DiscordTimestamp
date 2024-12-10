@@ -77,7 +77,7 @@ namespace DiscordTimestamp
                     ToolTipData = new ToolTipData("Relative", humanizedRelative),
                     Action = _ =>
                     {
-                        Clipboard.SetDataObject($"<t:{unixTimestamp}:R>");
+                        Clipboard.SetDataObject($"<t:{unixTimestamp}:t>");
                         return true;
                     },
                     ContextData = query.Search,
@@ -143,8 +143,8 @@ namespace DiscordTimestamp
                     QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Long date with short time",
-                    SubTitle = $"{date:MMMM d, yyyy} at {date.ToShortTimeString()}",
-                    ToolTipData = new ToolTipData("Long date with short time", $"{date:MMMM d, yyyy} at {date.ToShortTimeString()}"),
+                    SubTitle = $"{date:MMMM d, yyyy} {date.ToShortTimeString()}",
+                    ToolTipData = new ToolTipData("Long date with short time", $"{date:MMMM d, yyyy} {date.ToShortTimeString()}"),
                     Action = _ =>
                     {
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:f>");
@@ -157,8 +157,8 @@ namespace DiscordTimestamp
                     QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Long date with day of the week",
-                    SubTitle = $"{date.ToLongDateString()} at {date.ToShortTimeString()}",
-                    ToolTipData = new ToolTipData("Long date with day of the week", $"{date.ToLongDateString()} at {date.ToShortTimeString()}"),
+                    SubTitle = $"{date.ToLongDateString()} {date.ToShortTimeString()}",
+                    ToolTipData = new ToolTipData("Long date with day of the week", $"{date.ToLongDateString()} {date.ToShortTimeString()}"),
                     Action = _ =>
                     {
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:F>");
