@@ -1,0 +1,54 @@
+name: Release application
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: "Release build"
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        architecture: [x64, arm64]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Get the release version
+        id: get_version
+        uses: battila7/get-version-action@v2
+
+      - name: Set the release version in plugin.json
+        uses: tnikFi/json-file-transform@v1
+        with:
+          files: "src/plugin.json"
+          key-value-pairs: Version=${{ steps.get_version.outputs.version-without-v}}
+
+      - name: Build the application for ${{ matrix.architecture }}
+        run: |
+          dotnet publish -c Release /p:PublishProfile=${{ matrix.architecture }}
+
+      - name: Run tests
+        run: dotnet test vmr-generator.sln --configuration Release
+
+      - name: Zip the build output
+        run: |
+          # Get rid of the PowerToys support DLLs. They are only there for development purposes
+          # and shouldn't be included in the final archive.
+          Remove-Item -Recurse ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/runtimes
+          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/PowerToys.*
+          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/PowerToys.*
+          Compress-Archive -Path ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/* -DestinationPath ./x64.zip
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./${{ matrix.architecture }}.zip

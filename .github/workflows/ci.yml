@@ -1,0 +1,38 @@
+name: CI build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+env:
+  VERSION: "0.${{ github.event.number }}.${{ github.run_number }}"
+
+jobs:
+  build:
+    name: "CI build"
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        architecture: [x64, arm64]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Set the release version in plugin.json
+        uses: tnikFi/json-file-transform@v1
+        with:
+          files: "src/plugin.json"
+          key-value-pairs: Version=${{ env.VERSION }}
+
+      - name: Build the application for ${{ matrix.architecture }}
+        run: |
+          dotnet publish -c Release /p:PublishProfile=${{ matrix.architecture }}
