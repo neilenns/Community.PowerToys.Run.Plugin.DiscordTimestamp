@@ -4,6 +4,8 @@ using System.Windows;
 using ManagedCommon;
 using Wox.Plugin;
 using Humanizer;
+using Humanizer.Configuration;
+using Humanizer.DateTimeHumanizeStrategy;
 
 namespace DiscordTimestamp
 {
@@ -40,6 +42,8 @@ namespace DiscordTimestamp
         /// <returns>A filtered list, can be empty when nothing was found.</returns>
         public List<Result> Query(Query query)
         {
+            Configurator.DateTimeHumanizeStrategy = new PrecisionDateTimeHumanizeStrategy(precision: .85);
+
             var parser = new Chronic.Parser();
             var result = parser.Parse(query.Search);
 
