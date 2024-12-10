@@ -7,11 +7,11 @@ To use type `dt` followed by a date and/or time. Dates and times can be specifie
 language forms](https://github.com/mojombo/chronic?tab=readme-ov-file#examples). Select the desired Discord
 timestamp format from the resulting list then paste it into Discord.
 
-![Screenshot of the plugin showing results for "in 5 minutes"](Docs/results-example.png)
+![Animated GIF of the plugin showing results for "in 5 minutes"](docs/DiscordTimestamp.gif)
 
 The result when pasted into Discord:
 
-![Screenshot of Discord with a sent message containing the text "Let's play some disc golf! Meet outside in 5 minutes?". The "in 5 minutes" text is a live-updating time based on the timestamp pasted in.](Docs/discord-example.png)
+![Screenshot of Discord with a sent message containing the text "Let's play some disc golf! Meet outside in 5 minutes?". The "in 5 minutes" text is a live-updating time based on the timestamp pasted in.](docs/discord-example.png)
 
 ## Installation
 
