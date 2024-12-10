@@ -6,13 +6,14 @@ using Wox.Plugin;
 using Humanizer;
 using Humanizer.Configuration;
 using Humanizer.DateTimeHumanizeStrategy;
+using Wox.Plugin.Logger;
 
 namespace DiscordTimestamp
 {
     /// <summary>
     /// Main class of this plugin that implement all used interfaces.
     /// </summary>
-    public class Main : IPlugin, IContextMenu, IDisposable
+    public partial class Main : IPlugin, IContextMenu, IDisposable
     {
         /// <summary>
         /// ID of the plugin.
@@ -42,8 +43,13 @@ namespace DiscordTimestamp
         /// <returns>A filtered list, can be empty when nothing was found.</returns>
         public List<Result> Query(Query query)
         {
+            // If the default precision of .75 is used and "in 5 minutes" is the input query
+            // the resulting humanized value is "in 4 minutes". Setting the precision to .85
+            // ensures the result is "in 5 minutes".
             Configurator.DateTimeHumanizeStrategy = new PrecisionDateTimeHumanizeStrategy(precision: .85);
 
+            // Parse the query. If it fails to parse it means it's invalid input
+            // and just return an empty list.
             var parser = new Chronic.Parser();
             var result = parser.Parse(query.Search);
 
@@ -52,7 +58,10 @@ namespace DiscordTimestamp
                 return [];
             }
 
-            var date = result.Start.Value;
+            // The result from Chronic has a DateTimeKind of "Unspecified", which results in incorrect
+            // humanized strings for inputs like "5:45am" when it is 5:30am. Specifying the kind as
+            // Local resolves the problem.
+            var date = DateTime.SpecifyKind(result.ToTime(), DateTimeKind.Local);
             var unixTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds();
 
             var humanizedRelative = date.Humanize();
