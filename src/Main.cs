@@ -77,7 +77,7 @@ namespace DiscordTimestamp
                     ToolTipData = new ToolTipData("Relative", humanizedRelative),
                     Action = _ =>
                     {
-                        Clipboard.SetDataObject($"<t:{unixTimestamp}:t>");
+                        Clipboard.SetDataObject($"<t:{unixTimestamp}:R>");
                         return true;
                     },
                     ContextData = query.Search,

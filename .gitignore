@@ -3,3 +3,4 @@ bin/
 obj/
 **/*.pubxml.user
 **/*.tmp
+src/*.csproj.user
