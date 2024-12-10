@@ -7,8 +7,10 @@ on:
   pull_request:
     branches:
       - main
-env:
-  VERSION: "0.${{ github.event.number }}.${{ github.run_number }}"
+
+defaults:
+  run:
+    working-directory: ./src
 
 jobs:
   build:
@@ -27,12 +29,6 @@ jobs:
         with:
           dotnet-version: "9.0.x"
 
-      - name: Set the release version in plugin.json
-        uses: tnikFi/json-file-transform@v1
-        with:
-          files: "src/plugin.json"
-          key-value-pairs: Version=${{ env.VERSION }}
-
       - name: Build the application for ${{ matrix.architecture }}
         run: |
-          dotnet publish -c Release /p:PublishProfile=${{ matrix.architecture }}
+          dotnet publish ./src/DiscordTimestamp.csproj -c Release /p:PublishProfile=${{ matrix.architecture }}
