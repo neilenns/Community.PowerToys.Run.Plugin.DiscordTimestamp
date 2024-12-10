@@ -4,10 +4,10 @@
   "IsGlobal": false,
   "Name": "DiscordTimestamp",
   "Author": "Neil Enns",
-  "Version": "0.86.0",
+  "Version": "0.1.0",
   "Language": "csharp",
-  "Website": "https://github.com/Neil Enns/DiscordTimestamp",
-  "ExecuteFileName": "DiscordTimestamp.dll",
+  "Website": "https://github.com/neilenns/DiscordTimestamp",
+  "ExecuteFileName": "Community.PowerToys.Run.Plugin.DiscordTimestamp.dll",
   "IcoPathDark": "Images\\discordtimestamp.dark.png",
   "IcoPathLight": "Images\\discordtimestamp.light.png",
   "DynamicLoading": true

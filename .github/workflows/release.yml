@@ -28,6 +28,13 @@ jobs:
         id: get_version
         uses: battila7/get-version-action@v2
 
+      - name: Set version in plugin.json
+        uses: tnikFi/json-file-transform@v1
+        with:
+          files: "src/plugin.json"
+          key-value-pairs: |
+            Version=${{ steps.get_version.outputs.version-without-v }}
+
       - name: Build the application for ${{ matrix.architecture }}
         run: |
           dotnet publish .\src\DiscordTimestamp.csproj -c Release /p:PublishProfile=${{ matrix.architecture }}
@@ -36,14 +43,14 @@ jobs:
       # and shouldn't be included in the final archive. Then zip the remaining files for the release.
       - name: Zip the build output
         run: |
-          Remove-Item -Recurse ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/runtimes
-          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/PowerToys.*
-          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/Wox.*
-          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/WinRT.Runtime.dll
-          Compress-Archive -Path ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/publish/* -DestinationPath ./${{ env.ZipPrefix}}-${{ matrix.architecture }}-${{ steps.get_version.outputs.version-without-v}}.zip
+          Remove-Item -Recurse ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/DiscordTimestamp/runtimes
+          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/DiscordTimestamp/PowerToys.*
+          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/DiscordTimestamp/Wox.*
+          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/DiscordTimestamp/WinRT.Runtime.dll
+          Compress-Archive -Path ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows10.0.22621.0/DiscordTimestamp -DestinationPath ./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./${{ env.ZipPrefix}}-${{ matrix.architecture }}-${{ steps.get_version.outputs.version-without-v}}.zip
+            ./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip
