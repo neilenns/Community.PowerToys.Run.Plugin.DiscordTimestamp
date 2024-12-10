@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Input;
 using ManagedCommon;
 using Wox.Plugin;
+using Humanizer;
 
 namespace DiscordTimestamp
 {
@@ -40,30 +40,38 @@ namespace DiscordTimestamp
         /// <returns>A filtered list, can be empty when nothing was found.</returns>
         public List<Result> Query(Query query)
         {
-            var search = query.Search;
+            var parser = new Chronic.Parser();
+            var result = parser.Parse(query.Search);
 
-            var date = DateTime.Now;
+            if (result == null || result.Start == null)
+            {
+                return [];
+            }
+
+            var date = result.Start.Value;
             var unixTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds();
+
+            var humanizedRelative = date.Humanize();
 
             return
             [
                 new Result
                 {
-                    QueryTextDisplay = search,
+                    QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Relative",
-                    SubTitle = "1 minute ago",
-                    ToolTipData = new ToolTipData("Relative", "1 minute ago"),
+                    SubTitle = humanizedRelative,
+                    ToolTipData = new ToolTipData("Relative", humanizedRelative),
                     Action = _ =>
                     {
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:t>");
                         return true;
                     },
-                    ContextData = search,
+                    ContextData = query.Search,
                 },
                 new Result
                 {
-                    QueryTextDisplay = search,
+                    QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Short time",
                     SubTitle = date.ToShortTimeString(),
@@ -73,11 +81,11 @@ namespace DiscordTimestamp
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:t>");
                         return true;
                     },
-                    ContextData = search,
+                    ContextData = query.Search,
                 },
                 new Result
                 {
-                    QueryTextDisplay = search,
+                    QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Long time",
                     SubTitle = date.ToLongTimeString(),
@@ -87,11 +95,11 @@ namespace DiscordTimestamp
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:T>");
                         return true;
                     },
-                    ContextData = search,
+                    ContextData = query.Search,
                 },
                 new Result
                 {
-                    QueryTextDisplay = search,
+                    QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Short date",
                     SubTitle = date.ToShortDateString(),
@@ -101,11 +109,11 @@ namespace DiscordTimestamp
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:d>");
                         return true;
                     },
-                    ContextData = search,
+                    ContextData = query.Search,
                 },
                 new Result
                 {
-                    QueryTextDisplay = search,
+                    QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Long date",
                     SubTitle =  date.ToString("MMMM d, yyyy"),
@@ -115,11 +123,11 @@ namespace DiscordTimestamp
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:D>");
                         return true;
                     },
-                    ContextData = search,
+                    ContextData = query.Search,
                 },
                 new Result
                 {
-                    QueryTextDisplay = search,
+                    QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Long date with short time",
                     SubTitle = $"{date:MMMM d, yyyy} at {date.ToShortTimeString()}",
@@ -129,11 +137,11 @@ namespace DiscordTimestamp
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:f>");
                         return true;
                     },
-                    ContextData = search,
+                    ContextData = query.Search,
                 },
                 new Result
                 {
-                    QueryTextDisplay = search,
+                    QueryTextDisplay = query.Search,
                     IcoPath = IconPath,
                     Title = "Long date with day of the week",
                     SubTitle = $"{date.ToLongDateString()} at {date.ToShortTimeString()}",
@@ -143,7 +151,7 @@ namespace DiscordTimestamp
                         Clipboard.SetDataObject($"<t:{unixTimestamp}:F>");
                         return true;
                     },
-                    ContextData = search,
+                    ContextData = query.Search,
                 }
             ];
         }
@@ -166,27 +174,6 @@ namespace DiscordTimestamp
         /// <returns>A list context menu entries.</returns>
         public List<ContextMenuResult> LoadContextMenus(Result selectedResult)
         {
-            if (selectedResult.ContextData is string search)
-            {
-                return
-                [
-                    new ContextMenuResult
-                    {
-                        PluginName = Name,
-                        Title = "Copy to clipboard (Ctrl+C)",
-                        FontFamily = "Segoe MDL2 Assets",
-                        Glyph = "\xE8C8", // Copy
-                        AcceleratorKey = Key.C,
-                        AcceleratorModifiers = ModifierKeys.Control,
-                        Action = _ =>
-                        {
-                            Clipboard.SetDataObject(search);
-                            return true;
-                        },
-                    }
-                ];
-            }
-
             return [];
         }
 

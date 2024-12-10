@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordTimestamp", "DiscordTimestamp.csproj", "{82E669CF-8EC2-4F8E-9794-7DD1156A0332}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chronic8", "Chronic8\Chronic8.csproj", "{51CED6FE-9F06-4B2C-B787-43D5187E5138}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordTimestamp", "src\DiscordTimestamp.csproj", "{9F6BC993-BE43-40BE-9C30-18DBBDD77631}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,22 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Debug|ARM64.Build.0 = Debug|ARM64
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Debug|x64.ActiveCfg = Debug|x64
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Debug|x64.Build.0 = Debug|x64
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Release|ARM64.ActiveCfg = Release|ARM64
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Release|ARM64.Build.0 = Release|ARM64
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Release|x64.ActiveCfg = Release|x64
-		{82E669CF-8EC2-4F8E-9794-7DD1156A0332}.Release|x64.Build.0 = Release|x64
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Debug|x64.Build.0 = Debug|Any CPU
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Release|ARM64.Build.0 = Release|Any CPU
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Release|x64.ActiveCfg = Release|Any CPU
+		{51CED6FE-9F06-4B2C-B787-43D5187E5138}.Release|x64.Build.0 = Release|Any CPU
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Debug|ARM64.Build.0 = Debug|ARM64
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Debug|x64.ActiveCfg = Debug|x64
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Debug|x64.Build.0 = Debug|x64
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Release|ARM64.ActiveCfg = Release|ARM64
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Release|ARM64.Build.0 = Release|ARM64
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Release|x64.ActiveCfg = Release|x64
+		{9F6BC993-BE43-40BE-9C30-18DBBDD77631}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
