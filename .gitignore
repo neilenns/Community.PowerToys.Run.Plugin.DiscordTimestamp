@@ -1,3 +1,5 @@
 ﻿.vs/
 bin/
 obj/
+src/Properties/PublishProfiles/*.pubxml.user
+src/*.csproj.user
