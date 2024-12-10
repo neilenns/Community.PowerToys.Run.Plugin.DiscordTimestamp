@@ -50,7 +50,7 @@ namespace DiscordTimestamp
 
             // Parse the query. If it fails to parse it means it's invalid input
             // and just return an empty list.
-            var parser = new Chronic.Parser();
+            var parser = new ChronicNetCore.Parser();
             var result = parser.Parse(query.Search);
 
             if (result == null || result.Start == null)
