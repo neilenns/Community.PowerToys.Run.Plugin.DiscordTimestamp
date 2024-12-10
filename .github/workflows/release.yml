@@ -46,6 +46,7 @@ jobs:
           Remove-Item -Recurse ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/runtimes
           Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/PowerToys.*
           Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/Wox.*
+          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/*.xml
           Compress-Archive -Path ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp -DestinationPath ./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip
 
       - name: Upload release assets

@@ -1,32 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using ManagedCommon;
-using Wox.Plugin;
-using Humanizer;
-using Humanizer.Configuration;
-using Humanizer.DateTimeHumanizeStrategy;
-using Wox.Plugin.Logger;
+// <copyright file="Main.cs" company="Neil Enns">
+// Copyright (c) Neil Enns. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
 
 namespace DiscordTimestamp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using Humanizer;
+    using Humanizer.Configuration;
+    using Humanizer.DateTimeHumanizeStrategy;
+    using ManagedCommon;
+    using Wox.Plugin;
+
     /// <summary>
     /// Main class of this plugin that implement all used interfaces.
     /// </summary>
     public partial class Main : IPlugin, IContextMenu, IDisposable
     {
         /// <summary>
-        /// ID of the plugin.
+        /// Gets the ID of the plugin.
         /// </summary>
         public static string PluginID => "AE72E27DA82C4398AA24E9FFBF0C1ABD";
 
         /// <summary>
-        /// Name of the plugin.
+        /// Gets the name of the plugin.
         /// </summary>
         public string Name => "DiscordTimestamp";
 
         /// <summary>
-        /// Description of the plugin.
+        /// Gets the description of the plugin.
         /// </summary>
         public string Description => "Generates timestamps in Discord format for easy pasting into Discord.";
 
@@ -69,10 +73,10 @@ namespace DiscordTimestamp
             // "from now" stripped off and "in" prefixed, so it becomes "in 5 minutes" instead of
             // "in 5 minutes from now". Dates in the past don't need any modification. This still isn't
             // perfect, Humanize says "yesterday" while Discord says "a day ago" but I can't be bothered
-            // to chase down every little variation. 
+            // to chase down every little variation.
             var rawHumanizedRelative = date.Humanize();
             var humanizedRelative = rawHumanizedRelative.Contains(" from now") ?
-                $"in {date.Humanize().Replace(" from now", "")}" :
+                $"in {date.Humanize().Replace(" from now", string.Empty)}" :
                 rawHumanizedRelative;
 
             return
@@ -80,7 +84,7 @@ namespace DiscordTimestamp
                 new Result
                 {
                     QueryTextDisplay = query.Search,
-                    IcoPath = IconPath,
+                    IcoPath = this.IconPath,
                     Title = "Relative",
                     SubTitle = humanizedRelative,
                     ToolTipData = new ToolTipData("Relative", humanizedRelative),
@@ -94,7 +98,7 @@ namespace DiscordTimestamp
                 new Result
                 {
                     QueryTextDisplay = query.Search,
-                    IcoPath = IconPath,
+                    IcoPath = this.IconPath,
                     Title = "Short time",
                     SubTitle = date.ToShortTimeString(),
                     ToolTipData = new ToolTipData("Short time", date.ToShortTimeString()),
@@ -108,7 +112,7 @@ namespace DiscordTimestamp
                 new Result
                 {
                     QueryTextDisplay = query.Search,
-                    IcoPath = IconPath,
+                    IcoPath = this.IconPath,
                     Title = "Long time",
                     SubTitle = date.ToLongTimeString(),
                     ToolTipData = new ToolTipData("Long time", date.ToLongTimeString()),
@@ -122,7 +126,7 @@ namespace DiscordTimestamp
                 new Result
                 {
                     QueryTextDisplay = query.Search,
-                    IcoPath = IconPath,
+                    IcoPath = this.IconPath,
                     Title = "Short date",
                     SubTitle = date.ToShortDateString(),
                     ToolTipData = new ToolTipData("Short date", date.ToShortDateString()),
@@ -136,9 +140,9 @@ namespace DiscordTimestamp
                 new Result
                 {
                     QueryTextDisplay = query.Search,
-                    IcoPath = IconPath,
+                    IcoPath = this.IconPath,
                     Title = "Long date",
-                    SubTitle =  date.ToString("MMMM d, yyyy"),
+                    SubTitle = date.ToString("MMMM d, yyyy"),
                     ToolTipData = new ToolTipData("Long date", $"{date:MMMM d, yyyy}"),
                     Action = _ =>
                     {
@@ -150,7 +154,7 @@ namespace DiscordTimestamp
                 new Result
                 {
                     QueryTextDisplay = query.Search,
-                    IcoPath = IconPath,
+                    IcoPath = this.IconPath,
                     Title = "Long date with short time",
                     SubTitle = $"{date:MMMM d, yyyy} {date.ToShortTimeString()}",
                     ToolTipData = new ToolTipData("Long date with short time", $"{date:MMMM d, yyyy} {date.ToShortTimeString()}"),
@@ -164,7 +168,7 @@ namespace DiscordTimestamp
                 new Result
                 {
                     QueryTextDisplay = query.Search,
-                    IcoPath = IconPath,
+                    IcoPath = this.IconPath,
                     Title = "Long date with day of the week",
                     SubTitle = $"{date.ToLongDateString()} {date.ToShortTimeString()}",
                     ToolTipData = new ToolTipData("Long date with day of the week", $"{date.ToLongDateString()} {date.ToShortTimeString()}"),
@@ -175,6 +179,7 @@ namespace DiscordTimestamp
                     },
                     ContextData = query.Search,
                 }
+
             ];
         }
 
@@ -184,9 +189,9 @@ namespace DiscordTimestamp
         /// <param name="context">The <see cref="PluginInitContext"/> for this plugin.</param>
         public void Init(PluginInitContext context)
         {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
-            Context.API.ThemeChanged += OnThemeChanged;
-            UpdateIconPath(Context.API.GetCurrentTheme());
+            this.Context = context ?? throw new ArgumentNullException(nameof(context));
+            this.Context.API.ThemeChanged += this.OnThemeChanged;
+            this.UpdateIconPath(this.Context.API.GetCurrentTheme());
         }
 
         /// <summary>
@@ -202,7 +207,7 @@ namespace DiscordTimestamp
         /// <inheritdoc/>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -212,21 +217,21 @@ namespace DiscordTimestamp
         /// <param name="disposing">Indicate that the plugin is disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (Disposed || !disposing)
+            if (this.Disposed || !disposing)
             {
                 return;
             }
 
-            if (Context?.API != null)
+            if (this.Context?.API != null)
             {
-                Context.API.ThemeChanged -= OnThemeChanged;
+                this.Context.API.ThemeChanged -= this.OnThemeChanged;
             }
 
-            Disposed = true;
+            this.Disposed = true;
         }
 
-        private void UpdateIconPath(Theme theme) => IconPath = theme == Theme.Light || theme == Theme.HighContrastWhite ? "Images/discordtimestamp.light.png" : "Images/discordtimestamp.dark.png";
+        private void UpdateIconPath(Theme theme) => this.IconPath = theme == Theme.Light || theme == Theme.HighContrastWhite ? "Images/discordtimestamp.light.png" : "Images/discordtimestamp.dark.png";
 
-        private void OnThemeChanged(Theme currentTheme, Theme newTheme) => UpdateIconPath(newTheme);
+        private void OnThemeChanged(Theme currentTheme, Theme newTheme) => this.UpdateIconPath(newTheme);
     }
 }
