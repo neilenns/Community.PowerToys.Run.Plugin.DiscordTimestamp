@@ -47,6 +47,23 @@ namespace DiscordTimestamp
         /// <returns>A filtered list, can be empty when nothing was found.</returns>
         public List<Result> Query(Query query)
         {
+            if (string.IsNullOrEmpty(query.Search))
+            {
+                return [new Result
+                    {
+                        QueryTextDisplay = "Enter a date or time",
+                        IcoPath = this.IconPath,
+                        Title = "Enter a date or time",
+                        SubTitle = string.Empty,
+                        Action = _ =>
+                        {
+                            return true;
+                        },
+                        ContextData = query.Search,
+                    }
+                ];
+            }
+
             // If the default precision of .75 is used and "in 5 minutes" is the input query
             // the resulting humanized value is "in 4 minutes". Setting the precision to .85
             // ensures the result is "in 5 minutes".
