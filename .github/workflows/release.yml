@@ -6,6 +6,9 @@ on:
 
 env:
   ZipPrefix: DiscordTimestamp
+  BuildFolderName: DiscordTimestamp
+  ProjectName: DiscordTimestamp
+  FrameworkVersion: net9.0-windows10.0.22621.0
 
 jobs:
   build:
@@ -37,23 +40,23 @@ jobs:
 
       - name: Build the application for ${{ matrix.architecture }}
         run: |
-          dotnet publish .\src\DiscordTimestamp.csproj -c Release /p:PublishProfile=${{ matrix.architecture }}
+          dotnet publish ".\src\${{ env.ProjectName }}.csproj" -c Release /p:PublishProfile=${{ matrix.architecture }}
 
       # Get rid of the PowerToys support DLLs. They are only there for development purposes
       # and shouldn't be included in the final archive. Then zip the remaining files for the release.
       - name: Zip the build output
         run: |
-          Remove-Item -Recurse ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/runtimes
-          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/PowerToys.*
-          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/Wox.*
-          Remove-Item ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp/*.xml
-          Compress-Archive -Path ./src/bin/${{ matrix.architecture }}/Release/net8.0-windows/DiscordTimestamp -DestinationPath ./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip
+          Remove-Item -Recurse "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/runtimes"
+          Remove-Item "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/PowerToys.*"
+          Remove-Item "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/Wox.*"
+          Remove-Item ""./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/*.xml"
+          Compress-Archive -Path "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}" -DestinationPath "./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip"
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip
+            "./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip"
 
       - name: Upload checksums
         uses: wangzuo/action-release-checksums@v1
