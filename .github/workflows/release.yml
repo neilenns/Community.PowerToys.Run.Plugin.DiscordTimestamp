@@ -56,7 +56,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            "./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip"
+            ./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip
 
       - name: Upload checksums
         uses: wangzuo/action-release-checksums@v1
