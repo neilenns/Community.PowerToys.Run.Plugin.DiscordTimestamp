@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordTimestamp", "src\DiscordTimestamp.csproj", "{9F6BC993-BE43-40BE-9C30-18DBBDD77631}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordTimestamp", "src\Community.PowerToys.Run.Plugin.DiscordTimestamp.csproj", "{9F6BC993-BE43-40BE-9C30-18DBBDD77631}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
