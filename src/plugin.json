@@ -6,7 +6,7 @@
   "Author": "Neil Enns",
   "Version": "0.1.0",
   "Language": "csharp",
-  "Website": "https://github.com/neilenns/Community.PowerToys.Run.Plugin.Templates.DiscordTimestamp",
+  "Website": "https://github.com/neilenns/Community.PowerToys.Run.Plugin.DiscordTimestamp",
   "ExecuteFileName": "Community.PowerToys.Run.Plugin.DiscordTimestamp.dll",
   "IcoPathDark": "Images\\discordtimestamp.dark.png",
   "IcoPathLight": "Images\\discordtimestamp.light.png",
