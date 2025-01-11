@@ -23,7 +23,7 @@ The easiest way to install is with [ptr](https://github.com/8LWXpg/ptr):
 ptr add DiscordTimestamp neilenns/Community.PowerToys.Run.Plugin.DiscordTimestamp
 ```
 
-Alternatively download and extract the plugin from the [releases pages](https://github.com/neilenns/DiscordTimestamp/releases/latest) then extract the zip into a folder called `DiscordTimestamp` in your `%localappdata%\Microsoft\PowerToys\PowerToys Run\Plugins` folder. If you are installing manually make sure to restart PowerToys after adding the plugin to the folder.
+Alternatively download and extract the plugin from the [releases pages](https://github.com/neilenns/Community.PowerToys.Run.Plugin.DiscordTimestamp/releases/latest) then extract the zip into a folder called `DiscordTimestamp` in your `%localappdata%\Microsoft\PowerToys\PowerToys Run\Plugins` folder. If you are installing manually make sure to restart PowerToys after adding the plugin to the folder.
 
 ## Development notes
 

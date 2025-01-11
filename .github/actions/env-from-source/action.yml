@@ -1,0 +1,65 @@
+name: Set Env from JSON
+description: Extract specific paths from a JSON file and set them as environment variables.
+inputs:
+  manifest-file:
+    description: Path to the plugin's manifest.
+    required: true
+  manifest-paths:
+    description: Newline-separated list of JSON paths to extract from the manifest. The environment variable names will match the last part of each path.
+    required: true
+  project-file:
+    description: Path to the plugin's .csproj file.
+    required: true
+  project-paths:
+    description: Newline separated list of XML paths to extract from the manifest. The environment variable names will match the last part of each path.
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Extract and set environment variables from manifest
+      shell: pwsh
+      run: |
+        $jsonFilePath = '${{ inputs.manifest-file }}'
+        $jsonPathsInput = '${{ inputs.manifest-paths }}'
+
+        # Parse the JSON paths input into an array
+        $paths = $jsonPathsInput -split "`n"
+
+        # Load the JSON file
+        $json = Get-Content -Raw -Path $jsonFilePath | ConvertFrom-Json
+
+        # Iterate through paths and set variables
+        foreach ($path in $paths) {
+          $trimmedPath = $path.Trim()
+          if (-not $trimmedPath) { continue } # Skip empty lines
+
+          # Use the last segment of the path as the environment variable name
+          $envVar = $trimmedPath.Split('.')[-1]
+          $value = $json | Select-Object -ExpandProperty ([string]::Join('.', $trimmedPath -split '\.'))
+          Write-Output "$envVar=$value" | Out-File -Append -FilePath $env:GITHUB_ENV
+        }
+
+    - name: Extract and set values from project file
+      shell: pwsh
+      run: |
+        $xmlFilePath = '${{ inputs.project-file }}'
+        $xmlPathsInput = '${{ inputs.project-paths }}'
+
+        # Parse the XML paths input into an array
+        $paths = $xmlPathsInput -split "`n"
+
+        # Load the XML file
+        $xml = [xml](Get-Content -Path $xmlFilePath)
+
+        # Iterate through paths and extract values
+        foreach ($path in $paths) {
+          $trimmedPath = $path.Trim()
+          if (-not $trimmedPath) { continue } # Skip empty lines
+
+          # Use the last segment of the XPath as the environment variable name
+          $envVar = $trimmedPath.Split('/')[-1]
+          $value = ($xml.SelectNodes($trimmedPath) | ForEach-Object { $_.InnerText }) -join ','
+
+          Write-Output "$envVar=$value" | Out-File -Append -FilePath $env:GITHUB_ENV
+        }
