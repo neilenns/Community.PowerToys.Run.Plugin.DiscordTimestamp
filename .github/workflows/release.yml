@@ -4,15 +4,8 @@ on:
   release:
     types: [created]
 
-env:
-  ZipPrefix: DiscordTimestamp
-  BuildFolderName: DiscordTimestamp
-  ProjectName: DiscordTimestamp
-  FrameworkVersion: net9.0-windows10.0.22621.0
-
 jobs:
   build:
-    name: "Release build"
     runs-on: windows-latest
     strategy:
       matrix:
@@ -20,43 +13,24 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: "9.0.x"
+        uses: actions/checkout@v4
 
       - name: Get the release version
         id: get_version
         uses: dhkatz/get-version-action@v3.0.0
 
-      - name: Set version in plugin.json
-        uses: tnikFi/json-file-transform@v1
+      - name: Build, zip, and lint
+        id: build-zip-lint
+        uses: ./.github/actions/build-zip-lint
         with:
-          files: "src/plugin.json"
-          key-value-pairs: |
-            Version=${{ steps.get_version.outputs.version-without-v }}
-
-      - name: Build the application for ${{ matrix.architecture }}
-        run: |
-          dotnet publish ".\src\${{ env.ProjectName }}.csproj" -c Release /p:PublishProfile=${{ matrix.architecture }}
-
-      # Get rid of the PowerToys support DLLs. They are only there for development purposes
-      # and shouldn't be included in the final archive. Then zip the remaining files for the release.
-      - name: Zip the build output
-        run: |
-          Remove-Item -Recurse "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/runtimes"
-          Remove-Item "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/PowerToys.*"
-          Remove-Item "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/Wox.*"
-          Remove-Item "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}/*.xml"
-          Compress-Archive -Path "./src/bin/${{ matrix.architecture }}/Release/${{ env.FrameworkVersion }}/${{ env.BuildFolderName }}" -DestinationPath "./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip"
+          version: ${{ steps.get_version.outputs.version-without-v }}
+          architecture: ${{ matrix.architecture }}
 
       - name: Upload release assets
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
-            ./${{ env.ZipPrefix}}-${{ steps.get_version.outputs.version-without-v}}-${{ matrix.architecture }}.zip
+            ${{ steps.build-zip-lint.outputs.zipFile }}
 
       - name: Upload checksums
         uses: wangzuo/action-release-checksums@v1
