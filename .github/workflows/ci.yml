@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  ProjectName: DiscordTimestamp
+  ProjectName: Community.PowerToys.Run.Plugin.DiscordTimestamp
 
 jobs:
   build:
