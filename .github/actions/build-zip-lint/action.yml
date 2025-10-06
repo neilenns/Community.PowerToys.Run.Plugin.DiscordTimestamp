@@ -37,7 +37,7 @@ runs:
         dotnet tool install --global Community.PowerToys.Run.Plugin.Lint --version 0.4.0
 
     - name: Set version in plugin.json
-      uses: tnikFi/json-file-transform@v1
+      uses: tnikFi/json-file-transform@v3
       with:
         files: "src/plugin.json"
         key-value-pairs: |
